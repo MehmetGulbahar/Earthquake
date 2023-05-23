@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:earthquake_project/earthquake_card.dart';
 import 'package:earthquake_project/earthquake_info.dart';
@@ -17,7 +18,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<EarthquakeInfo> earthquakeInfoList = [];
 
-  void fetchData() async {
+  /*void fetchData() async {
     var earthquakeJsonData = await earthquakeDataToJson();
     List earthquakeList = jsonDecode(earthquakeJsonData);
     List<EarthquakeInfo> earthquakeInfoList = earthquakeList.map((item) => EarthquakeInfo.fromJson(item)).toList();
@@ -25,8 +26,17 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       this.earthquakeInfoList = earthquakeInfoList;
     });
-  }
+ }  */
+Future<void> refresh() async{
+    var earthquakeJsonData = await earthquakeDataToJson();
+    List earthquakeList = jsonDecode(earthquakeJsonData);
+    List<EarthquakeInfo> earthquakeInfoList = earthquakeList.map((item) => EarthquakeInfo.fromJson(item)).toList();
 
+    setState(() {
+      this.earthquakeInfoList = earthquakeInfoList;
+    });
+    return Future.delayed(Duration(seconds: 4));
+}
 
   void askUserLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
@@ -42,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    refresh();
     askUserLocation();
   }
 
@@ -52,10 +62,13 @@ class _MyHomePageState extends State<MyHomePage> {
         SystemUiOverlayStyle(statusBarColor: Colors.purple[900]));
     return Scaffold(
       appBar: _appBar,
-      body: ListView.builder(
-        itemCount: earthquakeInfoList.length,
-        itemBuilder: (context, index) =>
-            EarthQuakeCard(earthquakeInfo: earthquakeInfoList[index]),
+      body: RefreshIndicator(
+        onRefresh: refresh,
+        child: ListView.builder(
+          itemCount: min(20, earthquakeInfoList.length),
+          itemBuilder: (context, index) =>
+              EarthQuakeCard(earthquakeInfo: earthquakeInfoList[index]),
+        ),
       ),
     );
   }

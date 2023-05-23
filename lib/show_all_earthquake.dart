@@ -15,8 +15,8 @@ class _ShowAllEarthquakesState extends State<ShowAllEarthquakes> {
       appBar: AppBar(
         title: const Text('All Earthquakes'),
       ),
-      body: GoogleMap(
-        initialCameraPosition: const CameraPosition(
+      body: const GoogleMap(
+        initialCameraPosition: CameraPosition(
           target: LatLng(38.32305766032805, 27.129734188970232),
           zoom: 8,
         ),
