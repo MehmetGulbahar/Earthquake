@@ -39,7 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // The user has granted location permission
     }
   }
-
   @override
   void initState() {
     super.initState();
@@ -53,13 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
         SystemUiOverlayStyle(statusBarColor: Colors.purple[900]));
     return Scaffold(
       appBar: _appBar,
-      body: RefreshIndicator(
-        onRefresh: ,
-        child: ListView.builder(
-          itemCount: earthquakeInfoList.length,
-          itemBuilder: (context, index) =>
-              EarthQuakeCard(earthquakeInfo: earthquakeInfoList[index]),
-        ),
+      body: ListView.builder(
+        itemCount: earthquakeInfoList.length,
+        itemBuilder: (context, index) =>
+            EarthQuakeCard(earthquakeInfo: earthquakeInfoList[index]),
       ),
     );
   }

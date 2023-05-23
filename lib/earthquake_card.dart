@@ -11,13 +11,13 @@ class EarthQuakeCard extends StatelessWidget {
       color: Colors.grey[200],
       child: ListTile(
         title: Text(earthquakeInfo.location,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
         subtitle:
-        Text('Magnitude: ${earthquakeInfo.ml} Depth: ${earthquakeInfo.depth}'),
+        Text('Magnitude: ${earthquakeInfo.ml} Depth: ${earthquakeInfo.depth}',style: TextStyle(fontWeight:FontWeight.bold ),),
         trailing: IconButton(
           color: Colors.red,
           icon: Icon(Icons.map),
-          onPressed: null,
+          onPressed: () => Navigator.of(context).pushNamed('/show-all-earthquakes'),
           tooltip: ('Show on Map'),
         ),
       ),

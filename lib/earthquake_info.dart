@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:html/parser.dart';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:html/parser.dart' show parse;
 class EarthquakeInfo {
   final String date;
   final String time;
@@ -42,14 +43,21 @@ class EarthquakeInfo {
   }
 
 }
+
+
 Future<String> earthquakeDataToJson() async {
   var url = 'http://www.koeri.boun.edu.tr/scripts/lst8.asp';
-  var response = await http.get(Uri.parse(url));
 
-  var document = parse(response.body);
+  HttpClient httpClient = new HttpClient();
+  HttpClientRequest request = await httpClient.getUrl(Uri.parse(url));
+  HttpClientResponse response = await request.close();
+
+  var responseBody = await response.transform(latin1.decoder).join();
+
+  var document = parse(responseBody);
   var preElement = document.querySelector('body > pre');
 
-  var rawLines = preElement!.text.split('\n').sublist(7);
+  var rawLines = preElement!.text.split('\n').sublist(6);
 
   List<Map<String, dynamic>> earthquakes = [];
 
@@ -57,7 +65,7 @@ Future<String> earthquakeDataToJson() async {
     var segments = line.split(RegExp('\\s+'));
 
     if (segments.length < 9) continue;
-    var locationSplitIndex = segments.length - 1;
+    var locationSplitIndex = segments.length -1;
 
     Map<String, dynamic> earthquake = {
       'date': segments[0],
@@ -75,10 +83,17 @@ Future<String> earthquakeDataToJson() async {
     earthquakes.add(earthquake);
   }
 
-  return jsonEncode(earthquakes, toEncodable: (item) {
+  String jsonStr = jsonEncode(earthquakes, toEncodable: (item) {
     if(item is Map<String, dynamic>) {
       return item.map((key, value) => MapEntry(key, value.toString()));
     }
     return item.toString();
   });
+
+  // Türkçe karakterler için düzeltmeler
+  jsonStr = jsonStr.replaceAll('Ý', 'İ').replaceAll('Ð', 'Ğ').replaceAll('Þ', 'Ş').replaceAll('þ', 'ş').replaceAll('ð', 'ğ').replaceAll('ý', 'ı');
+
+  // çıktıyı utf8 formatına dönüştür
+  var encodedJson = utf8.encode(jsonStr);
+  return String.fromCharCodes(encodedJson);
 }
