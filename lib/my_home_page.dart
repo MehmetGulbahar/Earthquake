@@ -59,20 +59,20 @@ Future<void> refresh() async{
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.purple[900]));
+        SystemUiOverlayStyle(statusBarColor: Colors.grey[300]));
     return Scaffold(
       appBar: _appBar,
-      body: RefreshIndicator(
-        onRefresh: refresh,
-        child: ListView.builder(
-          itemCount: min(20, earthquakeInfoList.length),
-          itemBuilder: (context, index) =>
-              EarthQuakeCard(earthquakeInfo: earthquakeInfoList[index]),
-        ),
-      ),
+      body: _refreshIndicator,
     );
   }
-
+ RefreshIndicator get _refreshIndicator => RefreshIndicator(
+    onRefresh: refresh,
+    child: ListView.builder(
+      itemCount: min(35, earthquakeInfoList.length),
+      itemBuilder: (context, index) =>
+          EarthQuakeCard(earthquakeInfo: earthquakeInfoList[index]),
+    ),
+  );
   PreferredSizeWidget get _appBar => AppBar(
     title: Center(child: Text('EARTHQUAKE')),
     actions: [
@@ -80,7 +80,10 @@ Future<void> refresh() async{
           icon: Icon(CupertinoIcons.map),
           onPressed: () =>
               Navigator.of(context).pushNamed('/show-all-earthquakes')),
-      IconButton(onPressed: null, icon: Icon(Icons.refresh)),
+      IconButton(onPressed: () {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Center(child: Text('This Program Created By Mehmet Gulbahar',style:TextStyle(color: Colors.white),)), ),);
+      },
+        icon: Icon(Icons.info,color: Colors.white,),),
     ],
   );
 }
