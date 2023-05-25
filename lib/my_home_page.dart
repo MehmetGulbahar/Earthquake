@@ -59,21 +59,29 @@ Future<void> refresh() async{
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.grey[300]));
-    return Scaffold(
-      appBar: _appBar,
-      body: _refreshIndicator,
-    );
+        SystemUiOverlayStyle(statusBarColor: Colors.blue));
+    return SizedBox(
+      width: 200,
+      height: 300,
+      child: Padding(
+        padding:  EdgeInsets.all(1.0),
+        child: Scaffold(
+        appBar: _appBar,
+        backgroundColor: Colors.indigoAccent,
+        body: _refreshIndicator,
+    ),
+      ),);
   }
  RefreshIndicator get _refreshIndicator => RefreshIndicator(
     onRefresh: refresh,
     child: ListView.builder(
-      itemCount: min(35, earthquakeInfoList.length),
+      itemCount: min(50, earthquakeInfoList.length),
       itemBuilder: (context, index) =>
           EarthQuakeCard(earthquakeInfo: earthquakeInfoList[index]),
     ),
   );
   PreferredSizeWidget get _appBar => AppBar(
+    backgroundColor: Colors.indigoAccent,
     title: Center(child: Text('EARTHQUAKE')),
     actions: [
       IconButton(

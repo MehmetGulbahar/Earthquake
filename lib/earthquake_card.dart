@@ -12,42 +12,72 @@ class EarthQuakeCard extends StatelessWidget {
     return Column(
       children: [
         Container(
-          color: Colors.white,
+          height: 100,
+          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: ListTile(
+            leading: SizedBox(
+              width: 50,
+              height: 50,
+              child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: ColoredBox(
+                color: double.parse(earthquakeInfo.ml) > 4 ? Colors.red : Colors.grey,
+                child: Center(
+                  child: Text(
+                    '${earthquakeInfo.ml}',
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  ),
+                ),
+              ),
+            ),
             title: Text(earthquakeInfo.location,
                 style: TextStyle(
                     fontSize: 16,
-                    color: Colors.red,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold)),
-            subtitle: Row(
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'Magnitude: ${earthquakeInfo.ml}',
-                  style: TextStyle(
-                       fontSize: 15,
-                      fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-                Text(
-                  ' || ',
-                  style: TextStyle(color: Colors.black),
-                ),
                 Text('Depth: ${earthquakeInfo.depth}',
                     style: TextStyle(
-                      fontSize: 15,
-                        fontWeight: FontWeight.bold, color: Colors.black)),
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                Text('Hour : ${earthquakeInfo.time}',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black))
               ],
             ),
-            trailing: IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.map),
-              onPressed: () =>
-                  Navigator.of(context).pushNamed('/show-all-earthquakes'),
-              tooltip: ('Show on Map'),
+            trailing: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.grey[200],
+              ),
+              child: IconButton(
+                color: Colors.black,
+                icon: Icon(Icons.arrow_forward_ios),
+                onPressed:
+                    () => Navigator.of(context).pushNamed('/show-all-earthquakes'),
+                tooltip:
+                ('Show on Map'),
+              ),
             ),
           ),
         ),
-        Container(height: 2, color: Colors.black),
+
       ],
     );
+
   }
 }

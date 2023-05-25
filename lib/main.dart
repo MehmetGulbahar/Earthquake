@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(),
       routes: {
-      '/show-all-earthquakes' : (context)  => ShowAllEarthquakes(),
+      '/show-all-earthquakes' : (context)  => const ShowAllEarthquakes(),
       }
     );
   }

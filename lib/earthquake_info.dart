@@ -81,6 +81,7 @@ Future<String> earthquakeDataToJson() async {
     };
 
     earthquakes.add(earthquake);
+
   }
 
   String jsonStr = jsonEncode(earthquakes, toEncodable: (item) {

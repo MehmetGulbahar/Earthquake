@@ -21,9 +21,9 @@ class _ShowAllEarthquakesState extends State<ShowAllEarthquakes> {
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
           target: LatLng(38.32305766032805, 27.129734188970232),
-          zoom: 8,
+          zoom: 6,
         ),
-        mapType: MapType.hybrid,
+        mapType: MapType.satellite,
         myLocationButtonEnabled: true,
         myLocationEnabled: true,
         compassEnabled: true,
