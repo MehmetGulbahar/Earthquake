@@ -15,16 +15,16 @@ class EarthquakeInfo {
   final String quality;
 
   EarthquakeInfo({
-    required this.date,
-    required this.time,
-    required this.latitude,
-    required this.longitude,
-    required this.depth,
-    required this.md,
-    required this.ml,
-    required this.mw,
-    required this.location,
-    required this.quality,
+    this.date = '',
+    this.time = '',
+    this.latitude = '',
+    this.longitude = '',
+    this.depth = '',
+    this.md = '',
+    this.ml = '',
+    this.mw = '',
+    this.location = '',
+    this.quality = '',
   });
 
   factory EarthquakeInfo.fromJson(Map json) {

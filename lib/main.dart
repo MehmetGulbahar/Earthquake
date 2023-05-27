@@ -1,6 +1,7 @@
 import 'package:earthquake_project/show_all_earthquake.dart';
 import 'package:flutter/material.dart';
 
+import 'different_places_on_turkey/different_place_earthquake.dart';
 import 'my_home_page.dart';
 
 void main() {
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(),
       routes: {
       '/show-all-earthquakes' : (context)  => const ShowAllEarthquakes(),
+        '/different-places-on-Turkey': (context) => const SpecialPlace(),
       }
     );
   }

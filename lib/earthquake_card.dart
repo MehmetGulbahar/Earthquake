@@ -1,5 +1,9 @@
+
+
+import 'package:earthquake_project/ScreenArguments/ScreenArguments.dart';
 import 'package:earthquake_project/earthquake_info.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EarthQuakeCard extends StatelessWidget {
   final EarthquakeInfo earthquakeInfo;
@@ -12,11 +16,11 @@ class EarthQuakeCard extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 100,
+          height: 110,
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.deepPurple,
             borderRadius: BorderRadius.circular(10),
           ),
           child: ListTile(
@@ -30,45 +34,61 @@ class EarthQuakeCard extends StatelessWidget {
                 child: Center(
                   child: Text(
                     '${earthquakeInfo.ml}',
-                    style: TextStyle(
-                        fontSize: 17,
+                    style:GoogleFonts.openSans(fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                        color: Colors.white),
+
                   ),
                   ),
                 ),
               ),
             ),
             title: Text(earthquakeInfo.location,
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold)),
+                style:GoogleFonts.openSans(fontSize: 14,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+                    ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text('Depth: ${earthquakeInfo.depth}',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-                Text('Hour : ${earthquakeInfo.time}',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black))
+                Row(
+                  children: [
+                    Icon(Icons.info_rounded,color: Colors.deepOrangeAccent,size: 18,),
+                    Text('Depth: ${earthquakeInfo.depth}',
+                        style: GoogleFonts.openSans(fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)
+                            ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.access_time_filled,color: Colors.deepOrangeAccent,size: 18,),
+                    Text('Hour : ${earthquakeInfo.time}',
+                        style:GoogleFonts.openSans(fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),),
+                  ],
+                )
               ],
             ),
             trailing: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(70),
                 color: Colors.grey[200],
               ),
               child: IconButton(
                 color: Colors.black,
                 icon: Icon(Icons.arrow_forward_ios),
                 onPressed:
-                    () => Navigator.of(context).pushNamed('/show-all-earthquakes'),
+                    () => Navigator.of(context).pushNamed('/different-places-on-Turkey', arguments: ScreenArguments(
+                        depth:earthquakeInfo.depth,
+                        ml: earthquakeInfo.ml,
+                      place:earthquakeInfo.location,
+                      latitude: double.parse(earthquakeInfo.latitude),
+                      longitude:double.parse(earthquakeInfo.longitude),
+                    )),
                 tooltip:
                 ('Show on Map'),
               ),

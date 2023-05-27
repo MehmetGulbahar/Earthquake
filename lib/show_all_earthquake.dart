@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:earthquake_project/earthquake_info.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ShowAllEarthquakes extends StatefulWidget {
@@ -11,32 +14,52 @@ class ShowAllEarthquakes extends StatefulWidget {
 
 class _ShowAllEarthquakesState extends State<ShowAllEarthquakes> {
 
+  List<Marker> markers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    earthquakeDataToJson().then((response) {
+      List<dynamic> data = jsonDecode(response);
+      List<EarthquakeInfo> earthquakeInfos =
+      data.map((e) => EarthquakeInfo.fromJson(e)).toList();
+      setState(() {
+        markers = earthquakeInfos.map((e) {
+          Marker marker = Marker(
+            markerId: MarkerId(e.location),
+            position: LatLng(
+                double.parse(e.latitude), double.parse(e.longitude)),
+            infoWindow: InfoWindow(
+              title: e.location,
+              snippet: 'Magnitude: ${e.ml}  || Depth: ${e.depth} ',
+            ),
+          );
+          markers.add(marker);
+          return marker;
+        }).toList();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Earthquakes Map',style: TextStyle(fontWeight: FontWeight.bold),),),
+        title: Center(child: Text('Earthquakes Map',
+          style: GoogleFonts.openSans(
+              fontWeight: FontWeight.bold, fontSize: 20),),),
       ),
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
           target: LatLng(38.32305766032805, 27.129734188970232),
           zoom: 6,
         ),
-        mapType: MapType.satellite,
+        mapType: MapType.hybrid,
         myLocationButtonEnabled: true,
         myLocationEnabled: true,
         compassEnabled: true,
-        markers: <Marker>{
-          const Marker(
-            markerId: MarkerId('IZMIR'),
-            position: LatLng(38.346550, 27.142309),
-          infoWindow: InfoWindow(
-            title: 'Izmir',
-            snippet: 'Siddet: 0.0  || Derinlik: 0.0 '
-          )
-          )
-        },
+       markers: Set.of(markers),
+
       ),
     );
   }

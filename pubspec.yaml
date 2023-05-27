@@ -41,6 +41,11 @@ dependencies:
   http: ^0.13.6
   cloud_firestore: ^4.7.1
   html: ^0.15.3
+  liquid_pull_to_refresh: ^3.0.1
+  google_fonts: ^2.1.0
+  curved_navigation_bar:
+
+
 
 
 
