@@ -15,6 +15,7 @@ class _SpecialPlaceState extends State<SpecialPlace> {
   Widget build(BuildContext context) {
    final ScreenArguments args = ModalRoute.of(context)?.settings.arguments as ScreenArguments;
     return Scaffold(
+      backgroundColor: Colors.deepPurple[300],
       appBar: _appBar,
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
@@ -28,7 +29,8 @@ class _SpecialPlaceState extends State<SpecialPlace> {
             infoWindow: InfoWindow(
               title: args.place,
               snippet: 'Magnitude ${args.ml} || Depth ${args.depth}'
-            )
+            ),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
           )
         },
 

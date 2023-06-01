@@ -33,6 +33,8 @@ class _ShowAllEarthquakesState extends State<ShowAllEarthquakes> {
               title: e.location,
               snippet: 'Magnitude: ${e.ml}  || Depth: ${e.depth} ',
             ),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRose),
+
           );
           markers.add(marker);
           return marker;
@@ -45,6 +47,7 @@ class _ShowAllEarthquakesState extends State<ShowAllEarthquakes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.deepPurple[300],
         title: Center(child: Text('Earthquakes Map',
           style: GoogleFonts.openSans(
               fontWeight: FontWeight.bold, fontSize: 20),),),

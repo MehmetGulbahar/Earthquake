@@ -31,9 +31,10 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       actions: [
         IconButton(
-          icon: Icon(CupertinoIcons.info),
+          icon: Icon(Icons.message_outlined),
           onPressed: () => _showSnackBar(context),
         ),
+
       ],
     );
   }

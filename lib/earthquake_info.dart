@@ -43,8 +43,6 @@ class EarthquakeInfo {
   }
 
 }
-
-
 Future<String> earthquakeDataToJson() async {
   var url = 'http://www.koeri.boun.edu.tr/scripts/lst8.asp';
 
@@ -83,7 +81,6 @@ Future<String> earthquakeDataToJson() async {
     earthquakes.add(earthquake);
 
   }
-
   String jsonStr = jsonEncode(earthquakes, toEncodable: (item) {
     if(item is Map<String, dynamic>) {
       return item.map((key, value) => MapEntry(key, value.toString()));

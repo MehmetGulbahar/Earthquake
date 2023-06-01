@@ -43,7 +43,17 @@ dependencies:
   html: ^0.15.3
   liquid_pull_to_refresh: ^3.0.1
   google_fonts: ^2.1.0
-  curved_navigation_bar:
+  curved_navigation_bar: 1.0.3
+  custom_map_markers: ^0.0.2+1
+  audioplayers: ^0.20.1
+  lite_rolling_switch: ^1.0.1
+  flutter_advanced_switch: ^3.0.1
+  url_launcher: ^6.0.12
+  youtube_player_flutter: ^8.1.2
+  toggle_switch: ^2.1.0
+
+
+
 
 
 
