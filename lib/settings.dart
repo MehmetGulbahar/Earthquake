@@ -1,21 +1,62 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  final ValueChanged<bool> onNotificationsEnabledChanged;
+  final bool notificationsEnabled;
+
+  const SettingsPage({
+    Key? key,
+    required this.onNotificationsEnabledChanged,
+    required this.notificationsEnabled,
+  }) : super(key: key);
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool _notificationsEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationsEnabled = widget.notificationsEnabled;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
+      body: Center(
+        child: Row(
+          children: [
+            Text('Notifications'),
+            Center(
+              child: ToggleSwitch(
+                minWidth: 90.0,
+                cornerRadius: 20.0,
+                activeBgColors: [[Colors.green[800]!], [Colors.red[800]!]],
+                activeFgColor: Colors.white,
+                inactiveBgColor: Colors.grey,
+                inactiveFgColor: Colors.white,
+                initialLabelIndex: 1,
+                totalSwitches: 2,
+                labels: ['OPEN', 'CLOSE'],
+                radiusStyle: true,
+                onToggle: (index) {
+                  print('switched to: $index');
+                },
+              ),
+            ),
+          ],
+        )
+      ),
     );
   }
+
 
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(

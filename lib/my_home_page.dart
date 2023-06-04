@@ -8,14 +8,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'afad_card.dart';
 import 'afad_home_page.dart';
-import 'afad_info.dart';
 import 'earthquake-video-info.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -28,26 +29,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<EarthquakeInfo> earthquakeInfoList = [];
   List<EarthquakeInfo> filteredList = [];
-  List<AfadInfo> afadInfoList = [];
-  List<AfadInfo> afadfilteredList = [];
   bool _switchValue = false;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  bool notificationsEnabled = true;
 
 
 
   final currentIndex = ValueNotifier<int>(0);
 
-  Future<void> refreshAfadData() async {
-    try {
-      List<AfadInfo> earthquakeDataAfad = await afadEarthquake();
-      setState(() {
-        this.afadInfoList = earthquakeDataAfad;
-        this.afadfilteredList = earthquakeDataAfad;
-      });
-    } catch (e) {
-      print('Error: $e');
-    }
-    return Future.delayed(Duration(seconds: 1));
-  }
+
 
   Future<void> refresh() async {
     var earthquakeJsonData = await earthquakeDataToJson();
@@ -59,6 +50,9 @@ class _MyHomePageState extends State<MyHomePage> {
       this.earthquakeInfoList = earthquakeInfoList;
       this.filteredList = earthquakeInfoList;
     });
+    if (earthquakeInfoList.isNotEmpty) {
+      showNotification(earthquakeInfoList[0].location, earthquakeInfoList[0].ml);
+    }
     return Future.delayed(Duration(seconds: 1));
   }
 
@@ -74,8 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
-
   void filterData(String query) {
     setState(() {
       filteredList = earthquakeInfoList
@@ -84,12 +76,50 @@ class _MyHomePageState extends State<MyHomePage> {
           .toList();
     });
   }
+  void showNotification(String location, String magnitude) async {
+    var prefs = await SharedPreferences.getInstance();
+
+    var previousLocation = prefs.getString('previousLocation');
+    var previousMagnitude = prefs.getString('previousMagnitude');
+
+    // Check if the previous notification has the same details
+    if (previousLocation == location && previousMagnitude == magnitude) {
+      return; // Skip sending duplicate notification
+    }
+
+    var androidDetails = AndroidNotificationDetails(
+      'channelId',
+      'Earthquake',
+      channelDescription: 'channelDescription',
+      importance: Importance.max,
+      priority: Priority.high,
+      icon: 'earthquake',
+      styleInformation: BigTextStyleInformation(''),
+    );
+    var notificationDetails = NotificationDetails(android: androidDetails);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'New Earthquake!',
+      'Location: $location\nMagnitude: $magnitude',
+      notificationDetails,
+    );
+
+    // Store the details of the current notification
+    prefs.setString('previousLocation', location);
+    prefs.setString('previousMagnitude', magnitude);
+  }
 
   @override
   void initState() {
     super.initState();
     refresh();
     askUserLocation();
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        notificationsEnabled = prefs.getBool('notificationsEnabled') ?? true;
+      });
+    });
   }
 
   @override
@@ -126,7 +156,15 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex.value = index;
         if (index == 2) {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SettingsPage()));
+            context,
+            MaterialPageRoute(
+              builder: (context) => SettingsPage(
+                onNotificationsEnabledChanged: (bool value) {
+                },
+                notificationsEnabled: notificationsEnabled,
+              ),
+            ),
+          );
         }
       },
     );
@@ -195,10 +233,12 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ToggleSwitch(
         minWidth: 90.0,
         minHeight: 90.0,
-        cornerRadius: 60,
-        activeBgColor: [Colors.purple],
+        fontSize: 16.0,
+        cornerRadius: 35,
+        initialLabelIndex: 1,
+        activeBgColor:[Colors.blueAccent],
         activeFgColor: Colors.white,
-        inactiveBgColor: Colors.blueAccent,
+        inactiveBgColor: Colors.purple,
         inactiveFgColor: Colors.white,
         labels: ['Kandilli', 'Afad'],
         icons: [CupertinoIcons.arrow_left_circle, CupertinoIcons.arrow_right_circle],

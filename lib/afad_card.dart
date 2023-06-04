@@ -1,16 +1,21 @@
+import 'package:earthquake_project/AfadInfo.dart';
+import 'package:earthquake_project/AfadInfo.dart';
+import 'package:earthquake_project/AfadInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:intl/intl.dart';
+import 'AfadInfo.dart';
 import 'ScreenArguments/ScreenArguments.dart';
-import 'afad_info.dart';
 
 
 class AfadCard extends StatelessWidget {
-  final AfadInfo afadInfos;
-  const AfadCard({Key? key, required this.afadInfos }) : super(key: key);
+  final InfoAfad InfosAfad;
+  const AfadCard({Key? key, required this.InfosAfad }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String formattedDateTime = DateFormat('HH:mm:ss').format(DateTime.parse(InfosAfad.date)).toString();
+
     return Column(
       children: [
         Container(
@@ -28,10 +33,10 @@ class AfadCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: ColoredBox(
-                  color: double.parse(afadInfos.buyukluk) > 4 ? Colors.red : Colors.grey,
+                  color: double.parse(InfosAfad.magnitude as String) > 4 ? Colors.red : Colors.grey,
                   child: Center(
                     child: Text(
-                      '${afadInfos.buyukluk}',
+                      '${InfosAfad.magnitude}',
                       style:GoogleFonts.openSans(fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
@@ -40,8 +45,8 @@ class AfadCard extends StatelessWidget {
                 ),
               ),
             ),
-            title: Text(afadInfos.yer,
-              style:GoogleFonts.openSans(fontSize: 14,
+            title: Text(InfosAfad.location,
+              style:GoogleFonts.openSans(fontSize: 16,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
             ),
@@ -52,7 +57,7 @@ class AfadCard extends StatelessWidget {
                 Row(
                   children: [
                     Icon(Icons.info_rounded,color: Colors.deepOrangeAccent,size: 18,),
-                    Text('Depth: ${afadInfos.derinlik}',
+                    Text('Depth: ${InfosAfad.depth}',
                         style: GoogleFonts.openSans(fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.white)
@@ -62,10 +67,14 @@ class AfadCard extends StatelessWidget {
                 Row(
                   children: [
                     Icon(Icons.access_time_filled,color: Colors.deepOrangeAccent,size: 18,),
-                    Text('Hour : ${afadInfos.tarih}',
-                      style:GoogleFonts.openSans(fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),),
+                    Text(
+                      'Hour: $formattedDateTime',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -80,11 +89,11 @@ class AfadCard extends StatelessWidget {
                 icon: Icon(Icons.arrow_forward_ios),
                 onPressed:
                     () => Navigator.of(context).pushNamed('/different-places-on-Turkey', arguments: ScreenArguments(
-                  depth:afadInfos.derinlik,
-                  ml: afadInfos.buyukluk,
-                  place:afadInfos.yer,
-                  latitude: double.parse(afadInfos.enlem),
-                  longitude:double.parse(afadInfos.boylam),
+                  depth:InfosAfad.depth,
+                  ml: InfosAfad.magnitude,
+                  place:InfosAfad.location,
+                  latitude: double.parse(InfosAfad.latitude),
+                  longitude:double.parse(InfosAfad.longitude),
                 )),
                 tooltip:
                 ('Show on Map'),

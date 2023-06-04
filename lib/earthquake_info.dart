@@ -45,11 +45,11 @@ class EarthquakeInfo {
 }
 Future<String> earthquakeDataToJson() async {
   var url = 'http://www.koeri.boun.edu.tr/scripts/lst8.asp';
-
   HttpClient httpClient = new HttpClient();
+
   HttpClientRequest request = await httpClient.getUrl(Uri.parse(url));
   HttpClientResponse response = await request.close();
-
+  
   var responseBody = await response.transform(latin1.decoder).join();
 
   var document = parse(responseBody);

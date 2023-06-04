@@ -11,8 +11,8 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
+import 'AfadInfo.dart';
 import 'afad_card.dart';
-import 'afad_info.dart';
 import 'my_home_page.dart';
 import 'earthquake-video-info.dart';
 
@@ -24,37 +24,25 @@ class AfadHomePage extends StatefulWidget {
 }
 
 class _AfadHomePageState extends State<AfadHomePage> {
-  List<AfadInfo> afadInfoList = [];
-  List<AfadInfo> afadfilteredList = [];
+  List<InfoAfad> afadInfoList = [];
+  List<InfoAfad> afadfilteredList = [];
   bool _switchValue = false;
   final currentIndex = ValueNotifier<int>(0);
 
-  /*Future<void> refreshAfadData() async {
-    try {
-      List<AfadInfo> earthquakeDataAfad = await afadEarthquake();
-      setState(() {
-        this.afadInfoList = earthquakeDataAfad;
-        this.afadfilteredList = earthquakeDataAfad;
-      });
-    } catch (e) {
-      print('Error: $e');
-    }
-  } */
   Future<void> refreshAfadData() async {
-    List<AfadInfo> afadInfoList = await afadEarthquake();
+    List<InfoAfad> afadInfoList = await fetchEarthquakes();
 
     setState(() {
       this.afadInfoList = afadInfoList;
       this.afadfilteredList = afadInfoList;
     });
-    return Future.delayed(Duration(seconds: 1));
   }
 
 
   void filterData(String query) {
     setState(() {
       afadfilteredList = afadInfoList.where((item) {
-        return item.yer.toLowerCase().contains(query.toLowerCase());
+        return item.location.toLowerCase().contains(query.toLowerCase());
       }).toList();
     });
   }
@@ -67,7 +55,7 @@ class _AfadHomePageState extends State<AfadHomePage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+        SystemUiOverlayStyle(statusBarColor: Colors.blue.shade900));
     return SizedBox(
         width: 200,
         height: 300,
@@ -95,10 +83,18 @@ class _AfadHomePageState extends State<AfadHomePage> {
       ],
       onTap: (index) {
         currentIndex.value = index;
-        if (index == 2) {
+        /*if (index == 2) {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SettingsPage()));
-        }
+            context,
+            MaterialPageRoute(
+              builder: (context) => SettingsPage(
+                onNotificationsEnabledChanged: (bool value) {
+                },
+                notificationsEnabled: notificationsEnabled,
+              ),
+            ),
+          );
+        }*/
       },
     );
   }
@@ -112,10 +108,12 @@ class _AfadHomePageState extends State<AfadHomePage> {
       child: ToggleSwitch(
         minWidth: 90.0,
         minHeight: 90.0,
-        cornerRadius: 50,
-        activeBgColor: [Colors.purple],
+        fontSize: 16.0,
+        cornerRadius: 35,
+        initialLabelIndex: 1,
+        activeBgColor:[Colors.blueAccent],
         activeFgColor: Colors.white,
-        inactiveBgColor: Colors.blueAccent,
+        inactiveBgColor: Colors.purple,
         inactiveFgColor: Colors.white,
         labels: ['Kandilli', 'Afad'],
         icons: [CupertinoIcons.arrow_left_circle, CupertinoIcons.arrow_right_circle],
@@ -169,7 +167,7 @@ class _AfadHomePageState extends State<AfadHomePage> {
                 child: ListView.builder(
                   itemCount: min(50, afadfilteredList.length),
                   itemBuilder: (context, index) =>
-                      AfadCard(afadInfos: afadInfoList[index]),
+                      AfadCard(InfosAfad: afadInfoList[index]),
                 ),
               ),
             ],
@@ -195,7 +193,7 @@ class _AfadHomePageState extends State<AfadHomePage> {
     child:  ListView.builder(
       itemCount: min(50, afadfilteredList.length),
       itemBuilder: (context, index) =>
-          AfadCard(afadInfos: afadInfoList[index]),
+          AfadCard(InfosAfad: afadInfoList[index]),
     ),
   );
 

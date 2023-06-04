@@ -51,6 +51,8 @@ dependencies:
   url_launcher: ^6.0.12
   youtube_player_flutter: ^8.1.2
   toggle_switch: ^2.1.0
+  shared_preferences: ^2.0.12
+  intl: ^0.18.1
 
 
 
