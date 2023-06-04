@@ -167,7 +167,7 @@ class _AfadHomePageState extends State<AfadHomePage> {
                 child: ListView.builder(
                   itemCount: min(50, afadfilteredList.length),
                   itemBuilder: (context, index) =>
-                      AfadCard(InfosAfad: afadInfoList[index]),
+                      AfadCard(InfosAfad: afadfilteredList[index]),
                 ),
               ),
             ],
@@ -193,7 +193,7 @@ class _AfadHomePageState extends State<AfadHomePage> {
     child:  ListView.builder(
       itemCount: min(50, afadfilteredList.length),
       itemBuilder: (context, index) =>
-          AfadCard(InfosAfad: afadInfoList[index]),
+          AfadCard(InfosAfad: afadfilteredList[index]),
     ),
   );
 
