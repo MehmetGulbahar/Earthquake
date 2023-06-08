@@ -30,15 +30,17 @@ class _MyHomePageState extends State<MyHomePage> {
   List<EarthquakeInfo> earthquakeInfoList = [];
   List<EarthquakeInfo> filteredList = [];
   bool _switchValue = false;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin kandilliLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   bool notificationsEnabled = true;
 
-
+  void handleNotificationsEnabledChanged(bool value) {
+    setState(() {
+      notificationsEnabled = value;
+    });
+  }
 
   final currentIndex = ValueNotifier<int>(0);
-
-
 
   Future<void> refresh() async {
     var earthquakeJsonData = await earthquakeDataToJson();
@@ -51,7 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
       this.filteredList = earthquakeInfoList;
     });
     if (earthquakeInfoList.isNotEmpty) {
-      showNotification(earthquakeInfoList[0].location, earthquakeInfoList[0].ml);
+      showNotification(
+          earthquakeInfoList[0].location, earthquakeInfoList[0].ml);
     }
     return Future.delayed(Duration(seconds: 1));
   }
@@ -76,16 +79,17 @@ class _MyHomePageState extends State<MyHomePage> {
           .toList();
     });
   }
+
   void showNotification(String location, String magnitude) async {
     var prefs = await SharedPreferences.getInstance();
 
-    var previousLocation = prefs.getString('previousLocation');
+    /*var previousLocation = prefs.getString('previousLocation');
     var previousMagnitude = prefs.getString('previousMagnitude');
 
     // Check if the previous notification has the same details
     if (previousLocation == location && previousMagnitude == magnitude) {
       return; // Skip sending duplicate notification
-    }
+    }*/
 
     var androidDetails = AndroidNotificationDetails(
       'channelId',
@@ -98,9 +102,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     var notificationDetails = NotificationDetails(android: androidDetails);
 
-    await flutterLocalNotificationsPlugin.show(
+    await kandilliLocalNotificationsPlugin.show(
       0,
-      'New Earthquake!',
+      'KANDILLI!',
       'Location: $location\nMagnitude: $magnitude',
       notificationDetails,
     );
@@ -125,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.deepPurple));
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return SizedBox(
       width: 200,
       height: 300,
@@ -159,8 +163,8 @@ class _MyHomePageState extends State<MyHomePage> {
             context,
             MaterialPageRoute(
               builder: (context) => SettingsPage(
-                onNotificationsEnabledChanged: (bool value) {
-                },
+                onNotificationsEnabledChanged:
+                    handleNotificationsEnabledChanged,
                 notificationsEnabled: notificationsEnabled,
               ),
             ),
@@ -224,49 +228,52 @@ class _MyHomePageState extends State<MyHomePage> {
       );
 
   PreferredSizeWidget get _appBar => AppBar(
-    leading: IconButton(
-      icon: Icon(CupertinoIcons.map),
-      onPressed: () => Navigator.of(context).pushNamed('/show-all-earthquakes'),
-    ),
-    backgroundColor: Colors.deepPurple,
-    title: Center(
-      child: ToggleSwitch(
-        minWidth: 90.0,
-        minHeight: 90.0,
-        fontSize: 16.0,
-        cornerRadius: 35,
-        initialLabelIndex: 1,
-        activeBgColor:[Colors.blueAccent],
-        activeFgColor: Colors.white,
-        inactiveBgColor: Colors.purple,
-        inactiveFgColor: Colors.white,
-        labels: ['Kandilli', 'Afad'],
-        icons: [CupertinoIcons.arrow_left_circle, CupertinoIcons.arrow_right_circle],
-        onToggle: (index) {
-          setState(() {
-            _switchValue = index == 1;
-          });
-          if (_switchValue) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => AfadHomePage()),
-            );
-          } else {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => MyHomePage()),
-            );
-          }
-        },
-      ),
-    ),
-    actions: [
-      IconButton(
-        icon: Icon(CupertinoIcons.info_circle),
-        onPressed: () => Navigator.of(context).pushNamed('/earthquake-info-video'),
-      )
-    ],
-  );
-
-
+        leading: IconButton(
+          icon: Icon(CupertinoIcons.map),
+          onPressed: () =>
+              Navigator.of(context).pushNamed('/show-all-earthquakes'),
+        ),
+        backgroundColor: Colors.deepPurple,
+        title: Center(
+          child: ToggleSwitch(
+            minWidth: 90.0,
+            minHeight: 90.0,
+            fontSize: 16.0,
+            cornerRadius: 35,
+            initialLabelIndex: 1,
+            activeBgColor: [Colors.blueAccent],
+            activeFgColor: Colors.white,
+            inactiveBgColor: Colors.purple,
+            inactiveFgColor: Colors.white,
+            labels: ['Kandilli', 'Afad'],
+            icons: [
+              CupertinoIcons.arrow_left_circle,
+              CupertinoIcons.arrow_right_circle
+            ],
+            onToggle: (index) {
+              setState(() {
+                _switchValue = index == 1;
+              });
+              if (_switchValue) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => AfadHomePage()),
+                );
+              } else {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                );
+              }
+            },
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(CupertinoIcons.info_circle),
+            onPressed: () =>
+                Navigator.of(context).pushNamed('/earthquake-info-video'),
+          )
+        ],
+      );
 }

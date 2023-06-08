@@ -53,6 +53,8 @@ dependencies:
   toggle_switch: ^2.1.0
   shared_preferences: ^2.0.12
   intl: ^0.18.1
+  line_awesome_flutter: ^2.0.0
+
 
 
 
