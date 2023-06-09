@@ -1,8 +1,11 @@
+import 'package:animated_switch/animated_switch.dart';
+import 'package:earthquake_project/Settings/settings_save.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class SettingsPage extends StatefulWidget {
   final ValueChanged<bool> onNotificationsEnabledChanged;
@@ -19,13 +22,27 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _notificationsEnabled = false;
+  bool _notificationsEnabled = true;
   bool _afadNotificationsEnabled = false;
+  final rateMyApp = RateMyApp(
+    preferencesPrefix: 'rateMyApp_',
+    minDays: 7,
+    minLaunches: 10,
+    remindDays: 7,
+    remindLaunches: 10,
+  );
 
   @override
   void initState() {
     super.initState();
-    _notificationsEnabled = widget.notificationsEnabled;
+    _loadNotificationSettings();
+    }
+
+
+  Future<void> _loadNotificationSettings() async {
+    _notificationsEnabled = await SettingsSave.getKandilliNotificationEnabled();
+    _afadNotificationsEnabled = await SettingsSave.getAfadNotificationEnabled();
+    setState(() {});
   }
 
 
@@ -38,7 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
         children: [
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(vertical:100.0),
+              padding: EdgeInsets.symmetric(vertical: 100.0),
               itemCount: 4,
               itemBuilder: (context, index) {
                 switch (index) {
@@ -80,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(vertical:70.0),
+              padding: EdgeInsets.symmetric(vertical: 70.0),
               itemCount: 3,
               itemBuilder: (context, index) {
                 switch (index) {
@@ -92,7 +109,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     return ListTile(
                       title: ElevatedButton(
                         child: Text('Rate the App'),
-                        onPressed: _rateApp,
+                        onPressed: () {
+                          // Show the rating dialog.
+                          rateMyApp.showRateDialog(
+                            context,
+                            title: 'Rate this app',
+                            message: 'If you like this application,\nwould you please take your time to evaluate it for us?',
+                            rateButton: 'RATE',
+                            noButton: 'NO THANKS',
+                            laterButton: 'MAYBE LATER',
+                            ignoreNativeDialog: true,
+                          );
+                        },
                       ),
                     );
                   default:
@@ -101,6 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
           ),
+
           Expanded(
             child: ListView.builder(
               itemCount: 3,
@@ -112,7 +141,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     return _buildDivider();
                   case 2:
                     return ListTile(
-                      title: Text('3.02.24',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                      title: Text(
+                        '3.02.24',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     );
                   default:
                     return Container();
@@ -120,7 +155,6 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
           ),
-
         ],
       ),
     );
@@ -152,8 +186,17 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _buildToggleSwitch(
-      String title, bool enabled, ValueChanged<bool> onChanged) {
+  Widget _buildToggleSwitch(String title, bool enabled,
+      ValueChanged<bool> onChanged) {
+    bool value;
+    if (title == 'Kandilli Notification') {
+      value = _notificationsEnabled;
+    } else if (title == 'Afad Notification') {
+      value = _afadNotificationsEnabled;
+    } else {
+      value = enabled;
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
@@ -168,23 +211,30 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             Center(
-              child: ToggleSwitch(
-                minWidth: 65.0,
-                cornerRadius: 20.0,
-                activeBgColors: [
-                  [Colors.green[800]!],
-                  [Colors.red[800]!],
-                ],
-                activeFgColor: Colors.white,
-                inactiveBgColor: Colors.grey,
-                inactiveFgColor: Colors.white,
-                initialLabelIndex: enabled ? 0 : 1,
-                totalSwitches: 2,
-                labels: ['OPEN', 'CLOSE'],
-                radiusStyle: true,
-                onToggle: (index) {
-                  onChanged(index == 0);
+              child: AnimatedSwitch(
+                value: value,
+                onChanged: (newValue) async {
+                  if (title == 'Kandilli Notification') {
+                    setState(() {
+                      _notificationsEnabled = newValue;
+                    });
+                    await SettingsSave.setKandilliNotificationEnabled(newValue);
+                    widget.onNotificationsEnabledChanged(_notificationsEnabled);
+                  } else if (title == 'Afad Notification') {
+                    setState(() {
+                      _afadNotificationsEnabled = newValue;
+                    });
+                    await SettingsSave.setAfadNotificationEnabled(newValue);
+                    widget.onNotificationsEnabledChanged(
+                        _afadNotificationsEnabled);
+                  }
                 },
+                textOn: "On",
+                textOff: "Off",
+                textStyle: TextStyle(color: Colors.white, fontSize: 20),
+                colorOn: Colors.green,
+                colorOff: Colors.red,
+                indicatorColor: Colors.white,
               ),
             ),
           ],
@@ -192,6 +242,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
+
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
@@ -213,6 +264,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ],
     );
   }
+
 
   void _showSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -264,14 +316,5 @@ class _SettingsPageState extends State<SettingsPage> {
         elevation: 0,
       ),
     );
-  }
-}
-void _rateApp() async {
-  const url =
-      'https://play.google.com/store/apps/details?id=com.example.app';
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:earthquake_project/earthquake_info.dart';
+import 'package:earthquake_project/Kandilli%20Infos%20Card/earthquake_info.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

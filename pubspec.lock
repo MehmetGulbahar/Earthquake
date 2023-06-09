@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  animated_switch:
+    dependency: "direct main"
+    description:
+      name: animated_switch
+      sha256: "3c37856c65bf8903fd03b8418b59ebf8395258cfe3131763fc3e2d9038351b61"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   args:
     dependency: transitive
     description:
@@ -246,6 +254,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.14"
+  flutter_rating_bar:
+    dependency: transitive
+    description:
+      name: flutter_rating_bar
+      sha256: d2af03469eac832c591a1eba47c91ecc871fe5708e69967073c043b2d775ed93
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -528,6 +544,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.4"
+  rate_my_app:
+    dependency: "direct main"
+    description:
+      name: rate_my_app
+      sha256: fe210e9e6068095945f89fc2310a71b1cc2caae7f64fa65b83fc796badcb05e3
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
   shared_preferences:
     dependency: "direct main"
     description:

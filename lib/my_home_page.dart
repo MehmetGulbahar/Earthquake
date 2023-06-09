@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:earthquake_project/earthquake_card.dart';
-import 'package:earthquake_project/earthquake_info.dart';
-import 'package:earthquake_project/settings.dart';
+import 'package:earthquake_project/Kandilli%20Infos%20Card/earthquake_card.dart';
+import 'package:earthquake_project/Kandilli%20Infos%20Card/earthquake_info.dart';
+import 'package:earthquake_project/Settings/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,9 +15,9 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'afad_card.dart';
-import 'afad_home_page.dart';
-import 'earthquake-video-info.dart';
+import 'Afad Cards Infos/afad_card.dart';
+import 'Afad Cards Infos/afad_home_page.dart';
+import 'Video Pages/earthquake-video-info.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -81,15 +81,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void showNotification(String location, String magnitude) async {
+    if (!notificationsEnabled) {
+      return;
+    }
     var prefs = await SharedPreferences.getInstance();
 
-    /*var previousLocation = prefs.getString('previousLocation');
+   var previousLocation = prefs.getString('previousLocation');
     var previousMagnitude = prefs.getString('previousMagnitude');
 
-    // Check if the previous notification has the same details
     if (previousLocation == location && previousMagnitude == magnitude) {
-      return; // Skip sending duplicate notification
-    }*/
+      return;
+    }
+
+
 
     var androidDetails = AndroidNotificationDetails(
       'channelId',
@@ -125,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -236,10 +241,10 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.deepPurple,
         title: Center(
           child: ToggleSwitch(
-            minWidth: 90.0,
-            minHeight: 90.0,
+            minWidth: 100.0,
+            minHeight: 100.0,
             fontSize: 16.0,
-            cornerRadius: 35,
+            cornerRadius: 36,
             initialLabelIndex: 1,
             activeBgColor: [Colors.blueAccent],
             activeFgColor: Colors.white,

@@ -1,21 +1,16 @@
-import 'package:earthquake_project/AfadInfo.dart';
-import 'package:earthquake_project/AfadInfo.dart';
-import 'package:earthquake_project/AfadInfo.dart';
+import 'package:earthquake_project/ScreenArguments/ScreenArguments.dart';
+import 'package:earthquake_project/Kandilli%20Infos%20Card/earthquake_info.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'AfadInfo.dart';
-import 'ScreenArguments/ScreenArguments.dart';
 
+class EarthQuakeCard extends StatelessWidget {
+  final EarthquakeInfo earthquakeInfo;
 
-class AfadCard extends StatelessWidget {
-  final InfoAfad InfosAfad;
-  const AfadCard({Key? key, required this.InfosAfad }) : super(key: key);
+  const EarthQuakeCard({Key? key, required this.earthquakeInfo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String formattedDateTime = DateFormat('HH:mm:ss').format(DateTime.parse(InfosAfad.date)).toString();
-
     return Column(
       children: [
         Container(
@@ -23,7 +18,7 @@ class AfadCard extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Colors.blue.shade700,
+            color: Colors.deepPurple,
             borderRadius: BorderRadius.circular(10),
           ),
           child: ListTile(
@@ -31,25 +26,25 @@ class AfadCard extends StatelessWidget {
               width: 50,
               height: 50,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: ColoredBox(
-                  color: double.parse(InfosAfad.magnitude as String) > 4 ? Colors.red : Colors.grey,
-                  child: Center(
-                    child: Text(
-                      '${InfosAfad.magnitude}',
-                      style:GoogleFonts.openSans(fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
+              borderRadius: BorderRadius.circular(10),
+              child: ColoredBox(
+                color: double.parse(earthquakeInfo.ml) > 4 ? Colors.red : Colors.grey,
+                child: Center(
+                  child: Text(
+                    '${earthquakeInfo.ml}',
+                    style:GoogleFonts.openSans(fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
                   ),
                 ),
               ),
             ),
-            title: Text(InfosAfad.location,
-              style:GoogleFonts.openSans(fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
+            title: Text(earthquakeInfo.location,
+                style:GoogleFonts.openSans(fontSize: 14,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+                    ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -57,24 +52,20 @@ class AfadCard extends StatelessWidget {
                 Row(
                   children: [
                     Icon(Icons.info_rounded,color: Colors.deepOrangeAccent,size: 18,),
-                    Text('Depth: ${InfosAfad.depth}',
+                    Text('Depth: ${earthquakeInfo.depth}',
                         style: GoogleFonts.openSans(fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.white)
-                    ),
+                            ),
                   ],
                 ),
                 Row(
                   children: [
                     Icon(Icons.access_time_filled,color: Colors.deepOrangeAccent,size: 18,),
-                    Text(
-                      'Hour: $formattedDateTime',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                    Text('Hour : ${earthquakeInfo.time}',
+                        style:GoogleFonts.openSans(fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),),
                   ],
                 )
               ],
@@ -89,12 +80,12 @@ class AfadCard extends StatelessWidget {
                 icon: Icon(Icons.arrow_forward_ios),
                 onPressed:
                     () => Navigator.of(context).pushNamed('/different-places-on-Turkey', arguments: ScreenArguments(
-                  depth:InfosAfad.depth,
-                  ml: InfosAfad.magnitude,
-                  place:InfosAfad.location,
-                  latitude: double.parse(InfosAfad.latitude),
-                  longitude:double.parse(InfosAfad.longitude),
-                )),
+                        depth:earthquakeInfo.depth,
+                        ml: earthquakeInfo.ml,
+                      place:earthquakeInfo.location,
+                      latitude: double.parse(earthquakeInfo.latitude),
+                      longitude:double.parse(earthquakeInfo.longitude),
+                    )),
                 tooltip:
                 ('Show on Map'),
               ),
@@ -104,5 +95,6 @@ class AfadCard extends StatelessWidget {
 
       ],
     );
+
   }
 }
