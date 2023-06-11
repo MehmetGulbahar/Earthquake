@@ -1,16 +1,11 @@
 # earthquake_project
 
-A new Flutter project.
+Application Introduction:
+This application has been made for easy tracking and informing of earthquake data. Kandilli Observatory and Afad (Disaster and Emergency Management Presidency) data are used as data.
+It allows you to access the earthquake data from the search section and search according to the location you want, if you want, it allows you to view the earthquake-affected regions on the map. It offers a screen that allows you to set the notifications of the data coming to you from the notification settings section.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Kandilli](https://github.com/MehmetGulbahar/Earthquake/blob/main/lib/Kandilli.png)
+![Afad](https://github.com/MehmetGulbahar/Earthquake/blob/main/lib/Afad.png)
+![Map](https://github.com/MehmetGulbahar/Earthquake/blob/main/lib/All%20earthquakes.png)
+![Location](https://github.com/MehmetGulbahar/Earthquake/blob/main/lib/Specific%20location.png)
+![SettingsPage](https://github.com/MehmetGulbahar/Earthquake/blob/main/lib/Settings%20page.png)
