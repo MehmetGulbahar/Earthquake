@@ -20,6 +20,7 @@ class InfoAfad {
     this.latitude = '',
   });
 }
+
 Future<List<InfoAfad>> fetchEarthquakes() async {
   var minMag = "0"; // Min magnitude
   var maxMag = "20"; // Max magnitude
@@ -27,12 +28,9 @@ Future<List<InfoAfad>> fetchEarthquakes() async {
   var maxDepth = "100"; // Max depth
   var now = DateTime.now();
   var fiveDaysAgo = now.subtract(Duration(days: 2));
-  var start =
-      "${fiveDaysAgo.year}-${fiveDaysAgo.month.toString().padLeft(2, '0')}-${fiveDaysAgo.day.toString().padLeft(2, '0')}%2000:00:00";
-  var end =
-      "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}%2023:59:59";
-  var url = Uri.parse(
-      "https://deprem.afad.gov.tr/apiv2/event/filter?start=$start&end=$end&minmag=$minMag&maxmag=$maxMag&mindepth=$minDepth&maxdepth=$maxDepth");
+  var start = "${fiveDaysAgo.year}-${fiveDaysAgo.month.toString().padLeft(2, '0')}-${fiveDaysAgo.day.toString().padLeft(2, '0')}%2000:00:00";
+  var end = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}%2023:59:59";
+  var url = Uri.parse("https://deprem.afad.gov.tr/apiv2/event/filter?start=$start&end=$end&minmag=$minMag&maxmag=$maxMag&mindepth=$minDepth&maxdepth=$maxDepth");
   var response = await http.get(url);
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
@@ -43,7 +41,6 @@ Future<List<InfoAfad>> fetchEarthquakes() async {
           .add(Duration(hours: 3));
       item['date'] = dateInTurkey.toString();
     }
-
     var updatedData = data;
 
     List<InfoAfad> earthquakes = [];

@@ -46,7 +46,7 @@ class AfadCard extends StatelessWidget {
               ),
             ),
             title: Text(InfosAfad.location,
-              style:GoogleFonts.openSans(fontSize: 16,
+              style:GoogleFonts.openSans(fontSize: 14,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
             ),
@@ -70,7 +70,7 @@ class AfadCard extends StatelessWidget {
                     Text(
                       'Hour: $formattedDateTime',
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
