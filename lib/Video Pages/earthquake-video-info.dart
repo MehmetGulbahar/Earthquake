@@ -11,23 +11,23 @@ class VideoInfo extends StatefulWidget {
 }
 
 class _VideoInfoState extends State<VideoInfo> {
-  YoutubePlayerController _afad = YoutubePlayerController(
+  final YoutubePlayerController _afad = YoutubePlayerController(
     initialVideoId: 'oZeI0X40EEY',
-    flags: YoutubePlayerFlags(
+    flags: const YoutubePlayerFlags(
       autoPlay: false,
       mute: false,
     ),
   );
-  YoutubePlayerController _akut = YoutubePlayerController(
+  final YoutubePlayerController _akut = YoutubePlayerController(
     initialVideoId: 'G1sHBXX88GI',
-    flags: YoutubePlayerFlags(
+    flags: const YoutubePlayerFlags(
       autoPlay: false,
       mute: false,
     ),
   );
-  YoutubePlayerController _eskisehir = YoutubePlayerController(
+  final YoutubePlayerController _eskisehir = YoutubePlayerController(
     initialVideoId: '0dB2AycWeHg',
-    flags: YoutubePlayerFlags(
+    flags: const YoutubePlayerFlags(
       autoPlay: false,
       mute: false,
     ),
@@ -37,7 +37,12 @@ class _VideoInfoState extends State<VideoInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Informational Videos',style: GoogleFonts.openSans(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),)),
+        title: Center(
+            child: Text(
+          'Informational Videos',
+          style: GoogleFonts.openSans(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+        )),
         backgroundColor: Colors.deepPurple[300],
       ),
       body: ListView(
@@ -46,7 +51,7 @@ class _VideoInfoState extends State<VideoInfo> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Text(
+                const Text(
                   'AFAD Video',
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
@@ -65,7 +70,7 @@ class _VideoInfoState extends State<VideoInfo> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Text(
+                const Text(
                   'AKUT Video',
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
@@ -84,19 +89,15 @@ class _VideoInfoState extends State<VideoInfo> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Text(
+                const Text(
                   'Eskisehir Video',
-                  style:
-                  TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
                 YoutubePlayerBuilder(
-                  player:
-                  YoutubePlayer(controller: _eskisehir),
-                  builder:
-                      (context, player) {
+                  player: YoutubePlayer(controller: _eskisehir),
+                  builder: (context, player) {
                     return Container(
-                      child:
-                      player,
+                      child: player,
                     );
                   },
                 ),

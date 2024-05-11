@@ -2,22 +2,19 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:earthquake_project/Kandilli%20Infos%20Card/earthquake_card.dart';
-import 'package:earthquake_project/Kandilli%20Infos%20Card/earthquake_info.dart';
+import 'package:earthquake_project/Kandilli%20Infos%20Card/models/earthquake_info.dart';
 import 'package:earthquake_project/Settings/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'Afad Cards Infos/afad_card.dart';
 import 'Afad Cards Infos/afad_home_page.dart';
-import 'Video Pages/earthquake-video-info.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -50,13 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       this.earthquakeInfoList = earthquakeInfoList;
-      this.filteredList = earthquakeInfoList;
+      filteredList = earthquakeInfoList;
     });
     if (earthquakeInfoList.isNotEmpty) {
       showNotification(
           earthquakeInfoList[0].location, earthquakeInfoList[0].ml);
     }
-    return Future.delayed(Duration(seconds: 1));
+    return Future.delayed(const Duration(seconds: 1));
   }
 
   void askUserLocation() async {
@@ -86,16 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     var prefs = await SharedPreferences.getInstance();
 
-   var previousLocation = prefs.getString('previousLocation');
+    var previousLocation = prefs.getString('previousLocation');
     var previousMagnitude = prefs.getString('previousMagnitude');
 
     if (previousLocation == location && previousMagnitude == magnitude) {
       return;
     }
 
-
-
-    var androidDetails = AndroidNotificationDetails(
+    var androidDetails = const AndroidNotificationDetails(
       'channelId',
       'Earthquake',
       channelDescription: 'channelDescription',
@@ -130,20 +125,19 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+        const SystemUiOverlayStyle(statusBarColor: Colors.grey));
     return SizedBox(
       width: 200,
       height: 300,
       child: Padding(
-        padding: EdgeInsets.all(1.0),
+        padding: const EdgeInsets.all(1.0),
         child: Scaffold(
           bottomNavigationBar: _bottomNavigationBar(context),
           appBar: _appBar,
-          backgroundColor: Colors.deepPurple[200],
+          backgroundColor: Colors.white,
           body: _body(context),
         ),
       ),
@@ -152,11 +146,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _bottomNavigationBar(BuildContext context) {
     return CurvedNavigationBar(
-      backgroundColor: Colors.deepPurple,
-      color: Colors.deepPurple.shade200,
+      backgroundColor: HexColor("#222831"),
+      color: HexColor("#EEEEEE"),
       height: 50,
-      animationDuration: Duration(milliseconds: 400),
-      items: [
+      animationDuration: const Duration(milliseconds: 400),
+      items: const [
         Icon(CupertinoIcons.home),
         Icon(CupertinoIcons.search),
         Icon(CupertinoIcons.settings)
@@ -187,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return Column(
             children: [
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Search',
                   filled: true,
                   fillColor: Colors.white,
@@ -234,27 +228,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   PreferredSizeWidget get _appBar => AppBar(
         leading: IconButton(
-          icon: Icon(CupertinoIcons.map),
+          icon: const Icon(CupertinoIcons.map),
           onPressed: () =>
               Navigator.of(context).pushNamed('/show-all-earthquakes'),
         ),
-        backgroundColor: Colors.deepPurple,
         title: Center(
           child: ToggleSwitch(
-            minWidth: 100.0,
-            minHeight: 100.0,
-            fontSize: 16.0,
-            cornerRadius: 36,
             initialLabelIndex: 1,
-            activeBgColor: [Colors.blueAccent],
-            activeFgColor: Colors.white,
-            inactiveBgColor: Colors.purple,
-            inactiveFgColor: Colors.white,
-            labels: ['Kandilli', 'Afad'],
-            icons: [
-              CupertinoIcons.arrow_left_circle,
-              CupertinoIcons.arrow_right_circle
-            ],
+            totalSwitches: 2,
+            labels: const ['Kandilli', 'Afad'],
             onToggle: (index) {
               setState(() {
                 _switchValue = index == 1;
@@ -262,12 +244,12 @@ class _MyHomePageState extends State<MyHomePage> {
               if (_switchValue) {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => AfadHomePage()),
+                  MaterialPageRoute(builder: (context) => const AfadHomePage()),
                 );
               } else {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                  MaterialPageRoute(builder: (context) => const MyHomePage()),
                 );
               }
             },
@@ -275,7 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(CupertinoIcons.info_circle),
+            icon: const Icon(CupertinoIcons.info_circle),
             onPressed: () =>
                 Navigator.of(context).pushNamed('/earthquake-info-video'),
           )

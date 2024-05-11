@@ -7,21 +7,22 @@ import 'package:intl/intl.dart';
 import 'AfadInfo.dart';
 import '../ScreenArguments/ScreenArguments.dart';
 
-
 class AfadCard extends StatelessWidget {
   final InfoAfad InfosAfad;
-  const AfadCard({Key? key, required this.InfosAfad }) : super(key: key);
+  const AfadCard({Key? key, required this.InfosAfad}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String formattedDateTime = DateFormat('HH:mm:ss').format(DateTime.parse(InfosAfad.date)).toString();
+    String formattedDateTime = DateFormat('HH:mm:ss')
+        .format(DateTime.parse(InfosAfad.date))
+        .toString();
 
     return Column(
       children: [
         Container(
           height: 110,
-          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          padding: EdgeInsets.all(10),
+          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.blue.shade700,
             borderRadius: BorderRadius.circular(10),
@@ -33,11 +34,14 @@ class AfadCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: ColoredBox(
-                  color: double.parse(InfosAfad.magnitude as String) > 4 ? Colors.red : Colors.grey,
+                  color: double.parse(InfosAfad.magnitude) > 4
+                      ? Colors.red
+                      : Colors.grey,
                   child: Center(
                     child: Text(
-                      '${InfosAfad.magnitude}',
-                      style:GoogleFonts.openSans(fontSize: 18,
+                      InfosAfad.magnitude,
+                      style: GoogleFonts.openSans(
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
@@ -45,8 +49,10 @@ class AfadCard extends StatelessWidget {
                 ),
               ),
             ),
-            title: Text(InfosAfad.location,
-              style:GoogleFonts.openSans(fontSize: 14,
+            title: Text(
+              InfosAfad.location,
+              style: GoogleFonts.openSans(
+                  fontSize: 14,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
             ),
@@ -56,20 +62,28 @@ class AfadCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.info_rounded,color: Colors.deepOrangeAccent,size: 18,),
-                    Text('Depth: ${InfosAfad.depth}',
-                        style: GoogleFonts.openSans(fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)
+                    const Icon(
+                      Icons.info_rounded,
+                      color: Colors.deepOrangeAccent,
+                      size: 18,
                     ),
+                    Text('Depth: ${InfosAfad.depth}',
+                        style: GoogleFonts.openSans(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.access_time_filled,color: Colors.deepOrangeAccent,size: 18,),
+                    const Icon(
+                      Icons.access_time_filled,
+                      color: Colors.deepOrangeAccent,
+                      size: 18,
+                    ),
                     Text(
                       'Hour: $formattedDateTime',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -86,22 +100,21 @@ class AfadCard extends StatelessWidget {
               ),
               child: IconButton(
                 color: Colors.black,
-                icon: Icon(Icons.arrow_forward_ios),
-                onPressed:
-                    () => Navigator.of(context).pushNamed('/different-places-on-Turkey', arguments: ScreenArguments(
-                  depth:InfosAfad.depth,
-                  ml: InfosAfad.magnitude,
-                  place:InfosAfad.location,
-                  latitude: double.parse(InfosAfad.latitude),
-                  longitude:double.parse(InfosAfad.longitude),
-                )),
-                tooltip:
-                ('Show on Map'),
+                icon: const Icon(Icons.arrow_forward_ios),
+                onPressed: () => Navigator.of(context)
+                    .pushNamed('/different-places-on-Turkey',
+                        arguments: ScreenArguments(
+                          depth: InfosAfad.depth,
+                          ml: InfosAfad.magnitude,
+                          place: InfosAfad.location,
+                          latitude: double.parse(InfosAfad.latitude),
+                          longitude: double.parse(InfosAfad.longitude),
+                        )),
+                tooltip: ('Show on Map'),
               ),
             ),
           ),
         ),
-
       ],
     );
   }

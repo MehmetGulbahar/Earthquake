@@ -32,7 +32,7 @@ class _AfadHomePageState extends State<AfadHomePage> {
   final currentIndex = ValueNotifier<int>(0);
   bool notificationsEnabled = true;
   FlutterLocalNotificationsPlugin afadLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   void handleNotificationsEnabledChanged(bool value) {
     setState(() {
@@ -45,15 +45,13 @@ class _AfadHomePageState extends State<AfadHomePage> {
 
     setState(() {
       this.afadInfoList = afadInfoList;
-      this.afadfilteredList = afadInfoList;
+      afadfilteredList = afadInfoList;
     });
     if (afadInfoList.isNotEmpty) {
       showNotification(afadInfoList[0].location, afadInfoList[0].magnitude);
     }
-    return Future.delayed(Duration(seconds: 1));
-
+    return Future.delayed(const Duration(seconds: 1));
   }
-
 
   void filterData(String query) {
     setState(() {
@@ -62,6 +60,7 @@ class _AfadHomePageState extends State<AfadHomePage> {
       }).toList();
     });
   }
+
   void showNotification(String location, String magnitude) async {
     if (!notificationsEnabled) {
       return;
@@ -76,7 +75,7 @@ class _AfadHomePageState extends State<AfadHomePage> {
       return; // Skip sending duplicate notification
     }
      */
-    var androidDetails = AndroidNotificationDetails(
+    var androidDetails = const AndroidNotificationDetails(
       'channelId',
       'Earthquake',
       channelDescription: 'channelDescription',
@@ -109,31 +108,31 @@ class _AfadHomePageState extends State<AfadHomePage> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return SizedBox(
         width: 200,
         height: 300,
         child: Padding(
-        padding: EdgeInsets.all(1.0),
-    child: Scaffold(
-    bottomNavigationBar: _bottomNavigationBar(context),
-    appBar: _appBar,
-      backgroundColor: Colors.blue.shade900,
-      body: _body(context),
-    )
-        )
-    );
+            padding: const EdgeInsets.all(1.0),
+            child: Scaffold(
+              bottomNavigationBar: _bottomNavigationBar(context),
+              appBar: _appBar,
+              backgroundColor: Colors.blue.shade900,
+              body: _body(context),
+            )));
   }
+
   Widget _bottomNavigationBar(BuildContext context) {
     return CurvedNavigationBar(
       backgroundColor: Colors.blue.shade900,
       color: Colors.blue.shade700,
       height: 50,
-      animationDuration: Duration(milliseconds: 400),
-      items: [
+      animationDuration: const Duration(milliseconds: 400),
+      items: const [
         Icon(CupertinoIcons.home),
         Icon(CupertinoIcons.search),
         Icon(CupertinoIcons.settings)
@@ -146,7 +145,7 @@ class _AfadHomePageState extends State<AfadHomePage> {
             MaterialPageRoute(
               builder: (context) => SettingsPage(
                 onNotificationsEnabledChanged:
-                handleNotificationsEnabledChanged,
+                    handleNotificationsEnabledChanged,
                 notificationsEnabled: notificationsEnabled,
               ),
             ),
@@ -155,105 +154,107 @@ class _AfadHomePageState extends State<AfadHomePage> {
       },
     );
   }
-    PreferredSizeWidget get _appBar => AppBar(
-      leading: IconButton(
-        icon: Icon(CupertinoIcons.map),
-        onPressed: () => Navigator.of(context).pushNamed('/show-all-earthquakes'),
-      ),
-      backgroundColor: Colors.blue.shade900,
-      title: Center(
-        child: ToggleSwitch(
-          minWidth: 90.0,
-          minHeight: 90.0,
-          fontSize: 16.0,
-          cornerRadius: 35,
-          initialLabelIndex: 1,
-          activeBgColor:[Colors.blueAccent],
-          activeFgColor: Colors.white,
-          inactiveBgColor: Colors.purple,
-          inactiveFgColor: Colors.white,
-          labels: ['Kandilli', 'Afad'],
-          icons: [CupertinoIcons.arrow_left_circle, CupertinoIcons.arrow_right_circle],
-          onToggle: (index) {
-            setState(() {
-              _switchValue = index == 1;
-            });
-            if (_switchValue) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => AfadHomePage()),
-              );
-            } else {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => MyHomePage()),
-              );
-            }
-          },
+
+  PreferredSizeWidget get _appBar => AppBar(
+        leading: IconButton(
+          icon: const Icon(CupertinoIcons.map),
+          onPressed: () =>
+              Navigator.of(context).pushNamed('/show-all-earthquakes'),
         ),
-      ),
-      actions: [
-        IconButton(
-          icon: Icon(CupertinoIcons.info_circle),
-          onPressed: () => Navigator.of(context).pushNamed('/earthquake-info-video'),
-        )
-      ],
-    );
-
-
-    Widget _body(BuildContext context) {
-      return ValueListenableBuilder<int>(
-        valueListenable: currentIndex,
-        builder: (context, value, child) {
-          if (value == 1) {
-            return Column(
-              children: [
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  style: GoogleFonts.openSans(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                  onChanged: (value) => filterData(value),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: min(50, afadfilteredList.length),
-                    itemBuilder: (context, index) =>
-                        AfadCard(InfosAfad: afadfilteredList[index]),
-                  ),
-                ),
-              ],
-            );
-          } else if (value == 0) {
-            return _refreshIndicator;
-          } else {
-            return Container();
-          }
-        },
+        backgroundColor: Colors.blue.shade900,
+        title: Center(
+          child: ToggleSwitch(
+            minWidth: 90.0,
+            minHeight: 90.0,
+            fontSize: 16.0,
+            cornerRadius: 35,
+            initialLabelIndex: 1,
+            activeBgColor: const [Colors.blueAccent],
+            activeFgColor: Colors.white,
+            inactiveBgColor: Colors.purple,
+            inactiveFgColor: Colors.white,
+            labels: const ['Kandilli', 'Afad'],
+            icons: const [
+              CupertinoIcons.arrow_left_circle,
+              CupertinoIcons.arrow_right_circle
+            ],
+            onToggle: (index) {
+              setState(() {
+                _switchValue = index == 1;
+              });
+              if (_switchValue) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AfadHomePage()),
+                );
+              } else {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyHomePage()),
+                );
+              }
+            },
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(CupertinoIcons.info_circle),
+            onPressed: () =>
+                Navigator.of(context).pushNamed('/earthquake-info-video'),
+          )
+        ],
       );
-    }
+
+  Widget _body(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: currentIndex,
+      builder: (context, value, child) {
+        if (value == 1) {
+          return Column(
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Search',
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                style: GoogleFonts.openSans(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                onChanged: (value) => filterData(value),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: min(50, afadfilteredList.length),
+                  itemBuilder: (context, index) =>
+                      AfadCard(InfosAfad: afadfilteredList[index]),
+                ),
+              ),
+            ],
+          );
+        } else if (value == 0) {
+          return _refreshIndicator;
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
 
   LiquidPullToRefresh get _refreshIndicator => LiquidPullToRefresh(
-    onRefresh: () async {
-      await refreshAfadData();
-    },
-    color: Colors.blue.shade900,
-    animSpeedFactor: 2,
-    height: 200,
-    showChildOpacityTransition: false,
-    backgroundColor: Colors.blue.shade700,
-    child:  ListView.builder(
-      itemCount: min(50, afadfilteredList.length),
-      itemBuilder: (context, index) =>
-          AfadCard(InfosAfad: afadfilteredList[index]),
-    ),
-  );
-
-
+        onRefresh: () async {
+          await refreshAfadData();
+        },
+        color: Colors.blue.shade900,
+        animSpeedFactor: 2,
+        height: 200,
+        showChildOpacityTransition: false,
+        backgroundColor: Colors.blue.shade700,
+        child: ListView.builder(
+          itemCount: min(50, afadfilteredList.length),
+          itemBuilder: (context, index) =>
+              AfadCard(InfosAfad: afadfilteredList[index]),
+        ),
+      );
 }
-
