@@ -1,11 +1,8 @@
 import 'package:animated_switch/animated_switch.dart';
 import 'package:earthquake_project/Settings/settings_save.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rate_my_app/rate_my_app.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class SettingsPage extends StatefulWidget {
   final ValueChanged<bool> onNotificationsEnabledChanged;
@@ -36,15 +33,13 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     _loadNotificationSettings();
-    }
-
+  }
 
   Future<void> _loadNotificationSettings() async {
     _notificationsEnabled = await SettingsSave.getKandilliNotificationEnabled();
     _afadNotificationsEnabled = await SettingsSave.getAfadNotificationEnabled();
     setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
         children: [
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 100.0),
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
               itemCount: 4,
               itemBuilder: (context, index) {
                 switch (index) {
@@ -67,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     return _buildToggleSwitch(
                       'Kandilli Notification',
                       _notificationsEnabled,
-                          (value) {
+                      (value) {
                         setState(() {
                           _notificationsEnabled = value;
                         });
@@ -79,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     return _buildToggleSwitch(
                       'Afad Notification',
                       _afadNotificationsEnabled,
-                          (value) {
+                      (value) {
                         setState(() {
                           _afadNotificationsEnabled = value;
                         });
@@ -97,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 70.0),
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
               itemCount: 3,
               itemBuilder: (context, index) {
                 switch (index) {
@@ -108,13 +103,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   case 2:
                     return ListTile(
                       title: ElevatedButton(
-                        child: Text('Rate the App'),
+                        child: const Text('Rate the App'),
                         onPressed: () {
                           // Show the rating dialog.
                           rateMyApp.showRateDialog(
                             context,
                             title: 'Rate this app',
-                            message: 'If you like this application,\nwould you please take your time to evaluate it for us?',
+                            message:
+                                'If you like this application,\nwould you please take your time to evaluate it for us?',
                             rateButton: 'RATE',
                             noButton: 'NO THANKS',
                             laterButton: 'MAYBE LATER',
@@ -129,7 +125,6 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
           ),
-
           Expanded(
             child: ListView.builder(
               itemCount: 3,
@@ -140,7 +135,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   case 1:
                     return _buildDivider();
                   case 2:
-                    return ListTile(
+                    return const ListTile(
                       title: Text(
                         '3.02.24',
                         style: TextStyle(
@@ -162,13 +157,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _buildSectionTitle(String title) {
     return Container(
-      margin: EdgeInsets.all(5.0),
+      margin: const EdgeInsets.all(5.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -179,15 +174,15 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _buildDivider() {
-    return Divider(
+    return const Divider(
       thickness: 4,
       indent: 5,
       endIndent: 5,
     );
   }
 
-  Widget _buildToggleSwitch(String title, bool enabled,
-      ValueChanged<bool> onChanged) {
+  Widget _buildToggleSwitch(
+      String title, bool enabled, ValueChanged<bool> onChanged) {
     bool value;
     if (title == 'Kandilli Notification') {
       value = _notificationsEnabled;
@@ -231,7 +226,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
                 textOn: "On",
                 textOff: "Off",
-                textStyle: TextStyle(color: Colors.white, fontSize: 20),
+                textStyle: const TextStyle(color: Colors.white, fontSize: 20),
                 colorOn: Colors.green,
                 colorOff: Colors.red,
                 indicatorColor: Colors.white,
@@ -242,7 +237,6 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
-
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
@@ -258,13 +252,12 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.message_outlined),
+          icon: const Icon(Icons.message_outlined),
           onPressed: () => _showSnackBar(context),
         ),
       ],
     );
   }
-
 
   void _showSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -272,7 +265,7 @@ class _SettingsPageState extends State<SettingsPage> {
         content: Stack(
           children: [
             Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               height: 80,
               decoration: BoxDecoration(
                 color: Colors.red,

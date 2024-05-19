@@ -1,10 +1,10 @@
-import 'package:earthquake_project/Afad%20Cards%20Infos/AfadInfo.dart';
-import 'package:earthquake_project/Afad%20Cards%20Infos/AfadInfo.dart';
-import 'package:earthquake_project/Afad%20Cards%20Infos/AfadInfo.dart';
+import 'package:earthquake_project/Afad%20Cards%20Infos/models/AfadInfo.dart';
+import 'package:earthquake_project/Afad%20Cards%20Infos/models/AfadInfo.dart';
+import 'package:earthquake_project/Afad%20Cards%20Infos/models/AfadInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'AfadInfo.dart';
+import 'models/AfadInfo.dart';
 import '../ScreenArguments/ScreenArguments.dart';
 
 class AfadCard extends StatelessWidget {

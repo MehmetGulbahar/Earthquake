@@ -1,22 +1,19 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:earthquake_project/Afad%20Cards%20Infos/models/AfadInfo.dart';
 import 'package:earthquake_project/Settings/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
-import 'AfadInfo.dart';
 import 'afad_card.dart';
 import '../my_home_page.dart';
-import '../Video Pages/earthquake-video-info.dart';
 
 class AfadHomePage extends StatefulWidget {
   const AfadHomePage({Key? key}) : super(key: key);
@@ -128,8 +125,8 @@ class _AfadHomePageState extends State<AfadHomePage> {
 
   Widget _bottomNavigationBar(BuildContext context) {
     return CurvedNavigationBar(
-      backgroundColor: Colors.blue.shade900,
-      color: Colors.blue.shade700,
+      backgroundColor: HexColor("#222831"),
+      color: HexColor("#EEEEEE"),
       height: 50,
       animationDuration: const Duration(milliseconds: 400),
       items: const [
@@ -161,23 +158,11 @@ class _AfadHomePageState extends State<AfadHomePage> {
           onPressed: () =>
               Navigator.of(context).pushNamed('/show-all-earthquakes'),
         ),
-        backgroundColor: Colors.blue.shade900,
         title: Center(
           child: ToggleSwitch(
-            minWidth: 90.0,
-            minHeight: 90.0,
-            fontSize: 16.0,
-            cornerRadius: 35,
             initialLabelIndex: 1,
-            activeBgColor: const [Colors.blueAccent],
-            activeFgColor: Colors.white,
-            inactiveBgColor: Colors.purple,
-            inactiveFgColor: Colors.white,
+            totalSwitches: 2,
             labels: const ['Kandilli', 'Afad'],
-            icons: const [
-              CupertinoIcons.arrow_left_circle,
-              CupertinoIcons.arrow_right_circle
-            ],
             onToggle: (index) {
               setState(() {
                 _switchValue = index == 1;
